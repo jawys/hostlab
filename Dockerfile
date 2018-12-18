@@ -1,4 +1,5 @@
 FROM node:carbon-alpine
 WORKDIR /app
-RUN npm install -g nodemon
-CMD ["nodemon", "-L", "./bin/www"]
+#RUN yarn install && yarn compile
+ENTRYPOINT ["yarn", "run"]
+CMD ["start"]
