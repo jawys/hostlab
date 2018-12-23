@@ -166,7 +166,7 @@ function getStatusOfApplication(applicationName) {
   return new Promise(function(resolve, reject) {
     const containerToInspect = docker.getContainer(applicationName);
     containerToInspect.inspect(function(err, data) {
-      resolve(data.State.Status);
+      resolve(data && data.State.Status);
     });
   });
 }
