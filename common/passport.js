@@ -27,6 +27,10 @@ const passwordgen = require('passwordgen');
 const gitlab_token = process.env.GITLAB_TOKEN;
 const gitlab_url = process.env.GITLAB_URL;
 
+const path = require('path');
+const fs  = require('fs');
+
+
 module.exports = (app) => {
   app.use(passport.initialize());
   app.use(passport.session());
@@ -37,7 +41,7 @@ module.exports = (app) => {
    * to identify the user afterwards. 
    */
   passport.serializeUser((user, done) => {
-    log('Serialize User ', user);
+    log('Serialize User %o', user);
     done(null, user.id);
   });
 
@@ -59,6 +63,13 @@ module.exports = (app) => {
           bindCredentials: process.env.BINDCREDENTIALS,
           searchBase: process.env.SEARCHBASE,
           searchFilter: process.env.SEARCHFILTER,
+          tlsOptions: {
+            ca: [
+              fs.readFileSync(
+                path.join(__dirname, process.env.LDAP_SSL_CRT)
+              )
+            ],
+          },
         },
         handleErrorsAsFailures: true,
         usernameField: 'email',
