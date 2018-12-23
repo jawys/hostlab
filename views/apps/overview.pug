@@ -24,7 +24,7 @@ include includes/applicationBox
 block content
     h2.page-header
         span(style="margin-right: 10px;")= ` Applications (${user.containers.node.length})`
-        if repositories.length > 0
+        if repositories && repositories.length > 0
             .btn.btn-success.btn-flat.newApp(data-toggle="modal" data-target="#newAppModal")
                 i.fas.fa-plus(style="margin-right: 4px;")
                 | New
@@ -32,5 +32,5 @@ block content
         each application in user.containers.node
             +applicationBox(application)
 
-    if repositories.length > 0
+    if repositories && repositories.length > 0
         +createApplicationModal()
