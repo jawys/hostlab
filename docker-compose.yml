@@ -20,7 +20,7 @@ services:
     networks:
       - app
     volumes:
-      - /srv/hostlab/db:/data/db:rw
+      - /var/docker-mounts/hostlab/db:/data/db:rw
 networks:
   app:
     driver: bridge
