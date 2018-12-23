@@ -82,6 +82,9 @@ module.exports = (app) => {
         try {
           log(user);
 
+          // Normalize mail read from ldap (all lowercase!)
+          user.mail = user.mail.toLowerCase();
+
           // Check if a HOSTLAB account with this email exists
           const hostlabUser = await User.findOne({email: user.mail});
 
@@ -98,7 +101,8 @@ module.exports = (app) => {
           if (!hostlabUser) {
             // gets ALL gitlab users
             const {text} = await snek.get(
-                `${gitlab_url}/api/v4/users?private_token=${gitlab_token}`);
+                `${gitlab_url}/api/v4/users?private_token=${gitlab_token}&search=${ user.mail }`
+	    );
 
             // parse Gitlab response to json
             const users = JSON.parse(text);
@@ -136,7 +140,7 @@ module.exports = (app) => {
               const pass = passwordgen(8, false);
 
               // CREATE Gitlab account with generated password
-              const username = user.mail.toLowerCase().split('@')[0];
+              const username = user.mail.split('@')[0];
               const { text } = await snek.post(
                   `${ gitlab_url }/api/v4/users?private_token=${ gitlab_token }&email=${ user.mail }&password=${ pass }&username=${ username }&name=${ user.cn }&skip_confirmation=true&can_create_group=false`);
               const parsedRes = JSON.parse(text);
