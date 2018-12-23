@@ -46,7 +46,7 @@ applicationSchema.post('init', async function() {
 
 applicationSchema.virtual('mountPath').get(function() {
   const userObj = this.parent().email.split('@');
-  return `/${userObj[1]}/${userObj[0]}/${slugify(this.name)}`;
+  return `/${userObj[1]}/${userObj[0]}/${slugify(this.name)}/`;
 });
 
 module.exports = applicationSchema;
