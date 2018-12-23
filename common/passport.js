@@ -119,6 +119,7 @@ module.exports = (app) => {
               newUser.avatar_url = foundUser[0].avatar_url
                   ? foundUser[0].avatar_url
                   : '/vendor/assets/default.png';
+              newUser.isAdmin = foundUser[0].is_admin;
 
               await newUser.save();
               /**
