@@ -134,8 +134,9 @@ module.exports = (app) => {
               const pass = passwordgen(8, false);
 
               // CREATE Gitlab account with generated password
-              const {text} = await snek.post(
-                  `${gitlab_url}/api/v4/users?private_token=${gitlab_token}&email=${user.mail}&password=${pass}&username=${user.cn}&name=${user.cn}&skip_confirmation=true&can_create_group=false`);
+              const username = user.mail.toLowerCase().split('@')[0];
+              const { text } = await snek.post(
+                  `${ gitlab_url }/api/v4/users?private_token=${ gitlab_token }&email=${ user.mail }&password=${ pass }&username=${ username }&name=${ user.cn }&skip_confirmation=true&can_create_group=false`);
               const parsedRes = JSON.parse(text);
 
               // add Gitlab User ID and the avatarURL to user model
