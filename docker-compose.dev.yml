@@ -11,7 +11,10 @@ services:
     environment:
       - DEBUG=hostlab:*
       - LDAP_URL=ldap://ldap
-      - GITLAB_URL=http://gitlab.local
+      - BINDCREDENTIALS=12345
+      - BINDDN=cn=admin,dc=hostlab,dc=local
+      - SEARCHBASE=dc=hostlab,dc=local
+      - SEARCHFILTER=(mail={{username}})
   ldap:
     image: osixia/openldap:1.1.11
     networks:
@@ -36,8 +39,7 @@ services:
       - ./common/gitlab.rb:/etc/gitlab/gitlab.rb:ro
     ports:
       - ${GITLAB_IP:-0.0.0.0}:${GITLAB_PORT_80:-80}:80
-      - ${GITLAB_IP:-0.0.0.0}:${GITLAB_PORT_443:-443}:443
-      - ${GITLAB_IP:-0.0.0.0}:${GITLAB_PORT_22:-22}:22
+#      - ${GITLAB_IP:-0.0.0.0}:${GITLAB_PORT_22:-22}:22
 networks:
   dev:
     driver: bridge
